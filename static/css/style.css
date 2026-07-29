@@ -1254,6 +1254,644 @@
 /*** copyright Start ***/
 .copyright {
     border-top: 1px solid rgba(16, 102, 55, 0.932);
-    background:linear-gradient(100deg, #1B4332, #2D6A4F, #1B4332); !important;
+    background:linear-gradient(100deg, #1B4332, #2D6A4F, #1B4332)!important;
 }
 /*** copyright end ***/
+
+
+/* package details images alignment  css start */
+
+/* =========================================
+   PACKAGE DETAILS - CKEDITOR CONTENT
+========================================= */
+
+/* =========================================
+   PACKAGE DESCRIPTION IMAGE GALLERY
+========================================= */
+/* =========================================
+   PACKAGE DESCRIPTION GALLERY
+========================================= */
+
+.package-description-gallery {
+    width: 100%;
+    display: grid;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+
+/* =========================================
+   ALL GALLERY IMAGES
+========================================= */
+
+.package-gallery-item {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.package-gallery-item img {
+    display: block;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    object-fit: cover;
+
+    transition: transform 0.5s ease;
+}
+
+.package-gallery-item:hover img {
+    transform: scale(1.05);
+}
+
+
+/* =========================================
+   1 IMAGE
+========================================= */
+
+.package-description-gallery.gallery-1 {
+    grid-template-columns: 1fr;
+}
+
+.gallery-1 .package-gallery-item {
+    height: 500px;
+}
+
+
+/* =========================================
+   2 IMAGES
+========================================= */
+
+.package-description-gallery.gallery-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.gallery-2 .package-gallery-item {
+    height: 420px;
+}
+
+
+/* =========================================
+   3 IMAGES
+========================================= */
+
+.package-description-gallery.gallery-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.gallery-3 .package-gallery-item {
+    height: 380px;
+}
+
+
+/* =========================================
+   4 IMAGES
+   2 COLUMN × 2 ROW
+========================================= */
+
+.package-description-gallery.gallery-4 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.gallery-4 .package-gallery-item {
+    height: 350px;
+}
+
+
+/* =========================================
+   5 OR MORE IMAGES
+========================================= */
+
+.package-description-gallery.gallery-5 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: 230px;
+}
+
+
+/* 1st image */
+.gallery-5 .package-gallery-item:nth-child(1) {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+
+/* 2nd image */
+.gallery-5 .package-gallery-item:nth-child(2) {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+
+/* 3rd image = tall image */
+.gallery-5 .package-gallery-item:nth-child(3) {
+    grid-column: span 1;
+    grid-row: span 2;
+}
+
+
+/* 4th image */
+.gallery-5 .package-gallery-item:nth-child(4) {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+
+/* 5th image */
+.gallery-5 .package-gallery-item:nth-child(5) {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+
+/* Images after 5 */
+.gallery-5 .package-gallery-item:nth-child(n+6) {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+/* =========================================
+   TABLET + MOBILE
+========================================= */
+
+@media (max-width: 991px) {
+
+    .package-description-gallery,
+    .package-description-gallery.gallery-1,
+    .package-description-gallery.gallery-2,
+    .package-description-gallery.gallery-3,
+    .package-description-gallery.gallery-4,
+    .package-description-gallery.gallery-5 {
+
+        grid-template-columns: 1fr;
+        grid-auto-rows: auto;
+
+        gap: 12px;
+    }
+
+
+    .package-gallery-item,
+    .gallery-5 .package-gallery-item:nth-child(1),
+    .gallery-5 .package-gallery-item:nth-child(2),
+    .gallery-5 .package-gallery-item:nth-child(3),
+    .gallery-5 .package-gallery-item:nth-child(4),
+    .gallery-5 .package-gallery-item:nth-child(5),
+    .gallery-5 .package-gallery-item:nth-child(n+6) {
+
+        grid-column: auto !important;
+        grid-row: auto !important;
+
+        height: 350px;
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 576px) {
+
+    .package-description-gallery {
+        gap: 10px;
+    }
+
+    .package-gallery-item,
+    .gallery-1 .package-gallery-item,
+    .gallery-2 .package-gallery-item,
+    .gallery-3 .package-gallery-item,
+    .gallery-4 .package-gallery-item,
+    .gallery-5 .package-gallery-item {
+
+        height: 250px !important;
+    }
+
+}
+
+/* packages details image css end  */
+
+
+
+
+
+
+
+
+/* =========================================================
+   PACKAGE DETAIL PAGE - STICKY LEFT IMAGE css start
+========================================================= */
+
+.package-detail-section {
+    position: relative !important;
+    overflow: visible !important; /* required for sticky */
+}
+
+.package-detail-row {
+    position: relative !important;
+    align-items: stretch !important; /* equal height columns */
+    overflow: visible !important;
+}
+
+/* ---------- LEFT COLUMN (sticky image) ---------- */
+
+.package-left-column {
+    position: relative !important;
+    align-self: stretch !important;
+    overflow: visible !important;
+}
+
+.package-sticky-wrapper {
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 110px !important; /* adjust to navbar height */
+    width: 100%;
+    height: fit-content !important;
+    align-self: flex-start;
+    z-index: 10;
+}
+
+.package-carousel {
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.package-carousel .carousel-inner,
+.package-carousel .carousel-item {
+    width: 100%;
+}
+
+.package-carousel .carousel-item img {
+    display: block;
+    width: 100% !important;
+    height: 430px !important;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 20px;
+}
+
+/* ---------- RIGHT COLUMN (description) ---------- */
+
+.package-right-column {
+    position: relative !important;
+    overflow: visible !important;
+}
+
+.package-description-wrapper {
+    position: relative;
+    width: 100%;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important; /* no independent scrollbar */
+}
+
+.package-detail-title {
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.package-description-content {
+    width: 100%;
+    color: #555;
+    font-size: 16px;
+    line-height: 1.8;
+    overflow: visible !important;
+}
+
+.package-description-content p {
+    margin-bottom: 16px;
+}
+
+.package-description-content ul,
+.package-description-content ol {
+    padding-left: 25px;
+    margin-bottom: 20px;
+}
+
+.package-description-content li {
+    margin-bottom: 8px;
+}
+
+.package-description-content h1,
+.package-description-content h2,
+.package-description-content h3,
+.package-description-content h4,
+.package-description-content h5,
+.package-description-content h6 {
+    margin-top: 28px;
+    margin-bottom: 14px;
+    line-height: 1.4;
+}
+
+.package-description-content figure {
+    margin: 0;
+}
+
+/* ---------- ENQUIRE BUTTON ---------- */
+
+.package-enquire-btn {
+    background: linear-gradient(100deg, #1B4332, #2D6A4F, #1B4332);
+    border: none !important;
+    color: #fff !important;
+    font-weight: 500;
+    transition: 0.3s ease;
+}
+
+.package-enquire-btn:hover {
+    transform: translateY(-2px);
+    color: #fff !important;
+}
+
+/* =========================================================
+   DESCRIPTION IMAGE GALLERY (CKEditor images)
+========================================================= */
+
+.package-description-gallery {
+    width: 100%;
+    display: grid;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.package-gallery-item {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+}
+
+.package-gallery-item img {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.package-gallery-item:hover img {
+    transform: scale(1.05);
+}
+
+/* 1 image */
+.package-description-gallery.gallery-1 {
+    grid-template-columns: 1fr;
+}
+.gallery-1 .package-gallery-item {
+    height: 500px;
+}
+
+/* 2 images */
+.package-description-gallery.gallery-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.gallery-2 .package-gallery-item {
+    height: 420px;
+}
+
+/* 3 images */
+.package-description-gallery.gallery-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.gallery-3 .package-gallery-item {
+    height: 380px;
+}
+
+/* 4 images */
+.package-description-gallery.gallery-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.gallery-4 .package-gallery-item {
+    height: 350px;
+}
+
+/* 5+ images */
+.package-description-gallery.gallery-5 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: 230px;
+}
+.gallery-5 .package-gallery-item:nth-child(3) {
+    grid-row: span 2; /* tall third image */
+}
+
+/* =========================================================
+   TABLET (disable sticky)
+========================================================= */
+
+@media (max-width: 991.98px) {
+    .package-sticky-wrapper {
+        position: relative !important;
+        top: auto !important;
+        height: auto !important;
+    }
+
+    .package-left-column {
+        align-self: auto !important;
+    }
+
+    .package-carousel .carousel-item img {
+        height: 380px !important;
+    }
+
+    .package-description-gallery,
+    .package-description-gallery.gallery-1,
+    .package-description-gallery.gallery-2,
+    .package-description-gallery.gallery-3,
+    .package-description-gallery.gallery-4,
+    .package-description-gallery.gallery-5 {
+        grid-template-columns: 1fr;
+        grid-auto-rows: auto;
+        gap: 12px;
+    }
+
+    .package-gallery-item,
+    .gallery-5 .package-gallery-item:nth-child(3) {
+        grid-column: auto !important;
+        grid-row: auto !important;
+        height: 350px !important;
+    }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 575.98px) {
+    .package-detail-section {
+        padding-top: 20px !important;
+    }
+
+    .package-carousel .carousel-item img {
+        height: 270px !important;
+    }
+
+    .package-description-content {
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    .package-detail-title {
+        font-size: 28px;
+    }
+
+    .package-gallery-item {
+        height: 250px !important;
+    }
+}
+
+
+
+
+/* =========================================================
+   PACKAGE DESCRIPTION
+========================================================= */
+
+.package-description-content {
+    width: 100%;
+
+    color: #555;
+
+    font-size: 16px;
+    line-height: 1.8;
+
+    overflow: visible;
+}
+
+
+/* paragraphs */
+.package-description-content p {
+    margin-bottom: 18px;
+}
+
+
+/* headings */
+.package-description-content h1,
+.package-description-content h2,
+.package-description-content h3,
+.package-description-content h4,
+.package-description-content h5,
+.package-description-content h6 {
+
+    margin-top: 28px;
+    margin-bottom: 14px;
+
+    line-height: 1.4;
+}
+
+
+/* lists */
+.package-description-content ul,
+.package-description-content ol {
+
+    padding-left: 25px;
+
+    margin-bottom: 20px;
+}
+
+
+.package-description-content li {
+    margin-bottom: 8px;
+}
+
+
+
+/* =========================================================
+   CKEDITOR IMAGES
+========================================================= */
+
+.package-description-content figure.image {
+
+    width: 100%;
+
+    margin: 25px 0;
+
+    overflow: hidden;
+
+    border-radius: 15px;
+}
+
+
+.package-description-content figure.image img {
+
+    display: block;
+
+    width: 100% !important;
+    max-width: 100%;
+
+    height: auto !important;
+
+    object-fit: cover;
+
+    border-radius: 15px;
+}
+
+
+
+/* For images not wrapped in figure */
+.package-description-content img {
+
+    display: block;
+
+    max-width: 100%;
+
+    height: auto;
+
+    border-radius: 15px;
+}
+
+
+
+/* =========================================================
+   CKEDITOR IMAGE CAPTION
+========================================================= */
+
+.package-description-content figcaption {
+
+    text-align: center;
+
+    font-size: 14px;
+
+    color: #777;
+
+    padding: 8px 10px;
+}
+
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 767px) {
+
+    .package-description-content {
+
+        font-size: 15px;
+
+        line-height: 1.7;
+    }
+
+
+    .package-description-content figure.image {
+
+        width: 100%;
+
+        margin: 20px 0;
+    }
+
+
+    .package-description-content figure.image img {
+
+        width: 100% !important;
+
+        height: auto !important;
+    }
+
+}
+
+/* =========================================================
+   PACKAGE DETAIL PAGE - STICKY LEFT IMAGE css end
+========================================================= */
+
+
+

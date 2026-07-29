@@ -36,9 +36,12 @@
     <link rel="manifest" href="{% static 'favicon/site.webmanifest' %}">
 </head>
 <style>
-    html, body {
-        max-width: 100vw;
-        overflow-x: hidden;
+    html {
+    overflow-x: hidden;
+    }
+    body {
+    max-width: 100vw;
+    position: relative;
     }
     .nav-logo {
         height: 115px;
@@ -106,6 +109,7 @@
                     <a href="{% url 'properties' %}" class="nav-item nav-link {% if request.resolver_match and request.resolver_match.url_name == 'properties' %}active{% endif %}">Properties</a>
                     <a href="{% url 'blogs' %}" class="nav-item nav-link {% if request.resolver_match and request.resolver_match.url_name == 'blogs' %}active{% endif %}">Blog</a>
                     <a href="{% url 'gallery' %}" class="nav-item nav-link {% if request.resolver_match and request.resolver_match.url_name == 'gallery' %}active{% endif %}">Gallery</a>
+                    <a href="{% url 'booking' %}" class="nav-item nav-link {% if request.resolver_match and request.resolver_match.url_name == 'booking' %}active{% endif %}">Booking</a>
                     <a href="{% url 'contact' %}" class="nav-item nav-link {% if request.resolver_match and request.resolver_match.url_name == 'contact' %}active{% endif %}">Contact</a>
                 </div>
             </div>

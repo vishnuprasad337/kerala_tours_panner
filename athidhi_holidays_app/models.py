@@ -51,6 +51,13 @@ class Package(models.Model):
     def __str__(self):
         return self.name
 
+
+class PackageImage(models.Model):
+    package = models.ForeignKey(Package, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='Package_images/')
+
+    def __str__(self):
+        return f"Image for {self.package.name}"
 class Booking(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField()

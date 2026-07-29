@@ -28,7 +28,7 @@
                   <label for="updateblogDescription">Description</label>
                   <textarea class="form-control" id="updateblogDescription" name="description" rows="4" style="height: 150px;" placeholder="Enter Package Details" required>{{ package.description|safe }}</textarea>
               </div>
-              <div class="form-group">
+              {% comment %} <div class="form-group">
                   <label>Current Image</label><br>
                   {% if package.image %}
                   <img src="{{ package.image.url }}" alt="Current Image" style="width: 150px; height: 150px;"><br>
@@ -39,7 +39,64 @@
               <div class="form-group">
                   <label for="imageFile">Upload New Image</label>
                   <input type="file" class="form-control-file" id="imageFile" name="image" accept="image/*">
-              </div>
+              </div> {% endcomment %}
+
+{% comment %} <div class="form-group">
+    <label>Current Images</label><br>
+    {% for img in package.images.all %}
+        <img src="{{ img.image.url }}" alt="Current Image" style="width: 100px; height: 100px; margin-right: 5px;">
+    {% empty %}
+        <p>No images available</p>
+    {% endfor %}
+</div> {% endcomment %}
+<div class="form-group">
+    <label class="mb-3">Current Images</label>
+
+    <div class="current-images-wrap">
+
+        {% for img in package.images.all %}
+
+        <div class="package-image-box">
+
+            <img
+                src="{{ img.image.url }}"
+                alt="Package Image"
+                class="package-current-image"
+            >
+
+            <!-- hidden checkbox -->
+            <input
+                type="checkbox"
+                name="delete_images"
+                value="{{ img.id }}"
+                id="delete_image_{{ img.id }}"
+                class="delete-image-checkbox"
+            >
+
+            <!-- clickable X icon -->
+            <label
+                for="delete_image_{{ img.id }}"
+                class="delete-image-btn"
+                title="Delete image"
+            >
+                &times;
+            </label>
+
+        </div>
+
+        {% empty %}
+
+        <p>No images available</p>
+
+        {% endfor %}
+
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="imageFile">Add More Images</label>
+    <input type="file" class="form-control-file" id="imageFile" name="images" accept="image/*" multiple>
+</div>
               <button type="submit" class="btn btn-primary me-2">Update</button>
           </form>
         </div>
@@ -50,17 +107,132 @@
 
 
 
-<script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script>
+<style>
+
+.current-images-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+
+/* image card */
+.package-image-box {
+    position: relative;
+
+    width: 120px;
+    height: 120px;
+
+    padding: 8px;
+
+    border: 1px solid #ddd;
+    border-radius: 8px;
+
+    background: #fff;
+}
+
+
+/* image */
+.package-current-image {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    border-radius: 6px;
+
+    display: block;
+}
+
+
+/* hide real checkbox */
+.delete-image-checkbox {
+    display: none;
+}
+
+
+/* X button */
+.delete-image-btn {
+    position: absolute;
+
+    top: -8px;
+    right: -8px;
+
+    width: 26px;
+    height: 26px;
+
+    background: #dc3545;
+    color: white;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 20px;
+    font-weight: bold;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    border: 2px solid white;
+
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+
+    z-index: 10;
+
+    transition: 0.2s;
+}
+
+
+/* hover */
+.delete-image-btn:hover {
+    background: #b02a37;
+
+    transform: scale(1.08);
+}
+
+
+/* when selected for deletion */
+.delete-image-checkbox:checked + .delete-image-btn {
+    background: #6c757d;
+}
+
+
+/* make image look selected */
+.package-image-box:has(.delete-image-checkbox:checked) {
+    opacity: 0.45;
+}
+
+</style>
+
+
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        ClassicEditor
-            .create(document.querySelector('#updateblogDescription'))
-            .then(editor => {
-                console.log(editor);
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    });
+  document.addEventListener('DOMContentLoaded', function() {
+    ClassicEditor
+      .create(document.querySelector('#updateblogDescription'), {
+        toolbar: [
+          'heading', '|',
+          'bold', 'italic', 'underline', 'strikethrough', 'link', 'uploadFile', '|',
+          'bulletedList', 'numberedList', 'blockQuote', '|',
+          'insertTable', 'imageUpload', 'mediaEmbed', 'undo', 'redo'
+        ],
+        ckfinder: {
+          uploadUrl: '{% url "ckeditor_upload" %}'
+        },
+        simpleUpload: {
+          uploadUrl: '{% url "ckeditor_upload" %}',
+          headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+          }
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  });
 </script>
 {% endblock %}

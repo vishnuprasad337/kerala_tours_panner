@@ -10,7 +10,7 @@ import json
 from django.conf import settings
 
 
-from .models import ContactModel, District, Destination, ClientReview, Gallery, Folder, GalleryImage, Blog, Category, Package, Booking, Property, PropertyImage
+from .models import ContactModel, District, Destination, ClientReview, Gallery, Folder, GalleryImage, Blog, Category, Package, Booking, Property, PropertyImage,PackageImage
 from .forms import ContactModelForm, DestinationForm, ClientReviewForm, GalleryForm, FolderForm, BlogForm, DistrictForm, CategoryForm, PackageForm, BookingForm
 
 
@@ -541,18 +541,117 @@ def delete_category(request,id):
 
 
 # PAckages
+# @login_required(login_url='user_login')
+# def add_packages(request):
+#     categories = Category.objects.all()
+#     if request.method == 'POST':
+#         form = PackageForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('view_packages') 
+#     else:
+#         form = PackageForm()
+
+#     return render(request, 'admin_pages/add_packages.html', {'form': form, 'categories':categories})
+
 @login_required(login_url='user_login')
 def add_packages(request):
     categories = Category.objects.all()
     if request.method == 'POST':
         form = PackageForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            return redirect('view_packages') 
+            package = form.save()
+            images = request.FILES.getlist('images')
+            for img in images:
+                PackageImage.objects.create(package=package, image=img)
+            return redirect('view_packages')
     else:
         form = PackageForm()
 
-    return render(request, 'admin_pages/add_packages.html', {'form': form, 'categories':categories})
+    return render(request, 'admin_pages/add_packages.html', {'form': form, 'categories': categories})
+
+
+# @login_required(login_url='user_login')
+# def update_packages(request, id):
+#     package = get_object_or_404(Package, id=id)
+#     categories = Category.objects.all()
+#     if request.method == 'POST':
+#         form = PackageForm(request.POST, request.FILES, instance=package)
+#         if form.is_valid():
+#             form.save()
+#             images = request.FILES.getlist('images')
+#             for img in images:
+#                 PackageImage.objects.create(package=package, image=img)
+#             return redirect('view_packages')
+#     else:
+#         form = PackageForm(instance=package)
+#     return render(request, 'admin_pages/update_packages.html', {'form': form, 'package': package, 'categories': categories})
+
+
+@login_required(login_url='user_login')
+def update_packages(request, id):
+    package = get_object_or_404(Package, id=id)
+    categories = Category.objects.all()
+
+    if request.method == 'POST':
+        form = PackageForm(
+            request.POST,
+            request.FILES,
+            instance=package
+        )
+
+        if form.is_valid():
+            package = form.save()
+
+            # =====================================
+            # DELETE SELECTED CURRENT IMAGES
+            # =====================================
+            delete_image_ids = request.POST.getlist('delete_images')
+
+            if delete_image_ids:
+                images_to_delete = PackageImage.objects.filter(
+                    id__in=delete_image_ids,
+                    package=package
+                )
+
+                for image in images_to_delete:
+
+                    # delete actual file from media/storage
+                    if image.image:
+                        image.image.delete(save=False)
+
+                    # delete database record
+                    image.delete()
+
+
+            # =====================================
+            # ADD NEW IMAGES
+            # =====================================
+            images = request.FILES.getlist('images')
+
+            for img in images:
+                PackageImage.objects.create(
+                    package=package,
+                    image=img
+                )
+
+            return redirect('view_packages')
+
+    else:
+        form = PackageForm(instance=package)
+
+    return render(
+        request,
+        'admin_pages/update_packages.html',
+        {
+            'form': form,
+            'package': package,
+            'categories': categories
+        }
+    )
+
+
+
 
 
 @login_required(login_url='user_login')
@@ -561,18 +660,18 @@ def view_packages(request):
     return render(request, 'admin_pages/view_packages.html', {'packages': packages})
 
 
-@login_required(login_url='user_login')
-def update_packages(request, id):
-    package = get_object_or_404(Package, id=id)
-    categories = Category.objects.all()
-    if request.method == 'POST':
-        form = PackageForm(request.POST, request.FILES, instance=package)
-        if form.is_valid():
-            form.save()
-            return redirect('view_packages')
-    else:
-        form = PackageForm(instance=package)
-    return render(request, 'admin_pages/update_packages.html', {'form': form, 'package': package, 'categories':categories})
+# @login_required(login_url='user_login')
+# def update_packages(request, id):
+#     package = get_object_or_404(Package, id=id)
+#     categories = Category.objects.all()
+#     if request.method == 'POST':
+#         form = PackageForm(request.POST, request.FILES, instance=package)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('view_packages')
+#     else:
+#         form = PackageForm(instance=package)
+#     return render(request, 'admin_pages/update_packages.html', {'form': form, 'package': package, 'categories':categories})
 
 @login_required(login_url='user_login')
 def delete_packages(request,id):

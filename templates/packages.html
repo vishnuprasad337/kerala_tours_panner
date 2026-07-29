@@ -56,7 +56,22 @@
                             {% for package in category.packages.all %}
                             <div class="col-lg-4 col-md-6">
                                 <div class="destination-img" style="height: 300px;">
-                                    <img class="img-fluid rounded w-100" src="{{ package.image.url }}" style="height: 300px;" alt="{{ package.name }}">
+                                    {% comment %} <img class="img-fluid rounded w-100" src="{{ package.image.url }}" style="height: 300px;" alt="{{ package.name }}"> {% endcomment %}
+{% with cover=package.images.first %}
+
+    {% if cover %}
+        <img class="img-fluid rounded w-100"
+             src="{{ cover.image.url }}"
+             style="height: 300px; object-fit: cover;"
+             alt="{{ package.name }}">
+    {% else %}
+        <img class="img-fluid rounded w-100"
+             src="{% static 'images/default-package.jpg' %}"
+             style="height: 300px; object-fit: cover;"
+             alt="{{ package.name }}">
+    {% endif %}
+
+{% endwith %}
                                     <div class="destination-overlay p-4" style="background: rgba(8, 58, 23, 0.6);">
                                         <h4 class="text-white mb-2">{{ package.name }}</h4>
                                         <a href="{% url 'package_details' package.id %}" class=" rounded-pill text-white">
@@ -71,7 +86,7 @@
                 </div>
 
                 <!-- District-Specific Destinations -->
-                {% for category in categories %}
+                {% comment %} {% for category in categories %}
                 <div id="tab-{{ category.id }}" class="tab-pane fade p-0">
                     <div class="row g-4">
                         {% for package in category.packages.all %}
@@ -91,7 +106,66 @@
                         {% endfor %}
                     </div>
                 </div>
-                {% endfor %}
+                {% endfor %} {% endcomment %}
+
+                <!-- District-Specific Destinations -->
+{% for category in categories %}
+
+<div id="tab-{{ category.id }}" class="tab-pane fade p-0">
+
+    <div class="row g-4">
+
+        {% for package in category.packages.all %}
+
+        <div class="col-lg-4 col-md-6">
+
+            <div class="destination-img" style="height: 300px;">
+
+                {% with cover=package.images.first %}
+
+                    {% if cover %}
+                        <img class="img-fluid rounded w-100"
+                             src="{{ cover.image.url }}"
+                             style="height: 300px; object-fit: cover;"
+                             alt="{{ package.name }}">
+                    {% else %}
+                        <img class="img-fluid rounded w-100"
+                             src="{% static 'images/default-package.jpg' %}"
+                             style="height: 300px; object-fit: cover;"
+                             alt="{{ package.name }}">
+                    {% endif %}
+
+                {% endwith %}
+
+                <div class="destination-overlay p-4"
+                     style="background: rgba(8, 58, 23, 0.6);">
+
+                    <h4 class="text-white mb-2">
+                        {{ package.name }}
+                    </h4>
+
+                    <a href="{% url 'package_details' package.id %}"
+                       class="rounded-pill text-white">
+                        View Details
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+            <p>No Packages available for {{ category.name }}.</p>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endfor %}
             </div>
         </div>
     </div>

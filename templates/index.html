@@ -285,7 +285,7 @@
                         Discover travel tips, destination guides, and hidden gems with Kerala Tours Planner. Plan your perfect getaway with ease!
                     </p>
                 </div>
-                <div class="packages-carousel owl-carousel">
+                {% comment %} <div class="packages-carousel owl-carousel">
                     {% for package in packages %}
                     <div class="packages-item"> 
                         <div class="packages-img">
@@ -311,7 +311,42 @@
                         </div>
                     </div>
                     {% endfor %}
+                </div> {% endcomment %}
+
+                <div class="packages-carousel owl-carousel">
+    {% for package in packages %}
+    <div class="packages-item"> 
+        <div class="packages-img">
+            <a href="{% url 'package_details' package.id %}">
+                {% with package.images.first as first_image %}
+                    {% if first_image %}
+                        <img src="{{ first_image.image.url }}" class="img-fluid w-100 rounded-top" style="height:250px;" alt="{{ package.name }}">
+                    {% else %}
+                        <img src="{% static 'img/s1.jpg' %}" class="img-fluid w-100 rounded-top" style="height:250px;" alt="{{ package.name }}">
+                    {% endif %}
+                {% endwith %}
+            </a>
+        </div>
+        <div class="packages-content bg-light">
+            <div class="p-4 pb-0">
+                <h5 class="mb-0">
+                    <a href="{% url 'package_details' package.id %}" class="text-dark text-decoration-none">{{ package.name }}</a>
+                </h5>
+                <br>
+            </div>
+            <div class="row rounded-bottom mx-0" style="background: linear-gradient(100deg, #1B4332, #2D6A4F, #1B4332);">
+                <div class="col-6 text-start px-0">
+                    <a href="{% url 'package_details' package.id %}" class="btn text-white py-2 px-4">Read More</a>
                 </div>
+                <div class="col-6 text-end px-0">
+                    <a href="#" class="btn text-white py-2 px-4" data-bs-toggle="modal" data-bs-target="#whatsappBookingModal">Book Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
             </div>
         </div>
         <!-- Packages End -->

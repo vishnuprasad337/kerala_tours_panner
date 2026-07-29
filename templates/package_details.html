@@ -1,53 +1,225 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block title %}{{ package.name }} Details{% endblock %}
+
 {% block content %}
 
+{% with cover=package.images.first %}
 
-        <div class="container-fluid" 
-        style="background: linear-gradient(rgba(23, 23, 24, 0.5), rgba(23, 23, 24, 0.5)), 
-               url('{{ package.image.url }}');
-               background-position: center center;
-               background-repeat: no-repeat;
-               background-size: cover;
-               background-attachment: fixed;
-               padding: 150px 0 50px;">
+<!-- ========================================
+     HERO SECTION
+========================================= -->
+<div class="container-fluid"
+     style="
+        background:
+            linear-gradient(
+                rgba(23, 23, 24, 0.5),
+                rgba(23, 23, 24, 0.5)
+            ),
+            url('{% if cover %}{{ cover.image.url }}{% endif %}');
 
-   
-            <div class="container text-center py-5" style="max-width: 900px;">
-                <h3 class="text-white display-3 mb-4">{{ package.name }}</h1>
-                <ol class="breadcrumb justify-content-center mb-0">
-                    <li class="breadcrumb-item"><a  style="color: #fff!important;" href="{% url 'index' %}">Home</a></li>
-                    <!-- <li class="breadcrumb-item"><a href="#">Pages</a></li> -->
-                    <li class="breadcrumb-item active " style="color: #b1a4a4;">{{ package.name }} Details</li>
-                </ol>    
-            </div>
-        </div>
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+
+        padding: 150px 0 50px;
+     ">
+
+    <div
+        class="container text-center py-5"
+        style="max-width: 900px;"
+    >
+
+        <h3 class="text-white display-3 mb-4">
+            {{ package.name }}
+        </h3>
+
+        <ol class="breadcrumb justify-content-center mb-0">
+
+            <li class="breadcrumb-item">
+                <a
+                    style="color: #fff !important;"
+                    href="{% url 'index' %}"
+                >
+                    Home
+                </a>
+            </li>
+
+            <li
+                class="breadcrumb-item active"
+                style="color: #b1a4a4;"
+            >
+                {{ package.name }} Details
+            </li>
+
+        </ol>
+
+    </div>
+
+</div>
 
 
 
-        <div class="container-fluid about py-5">
-            <div class="container py-5">
-                <div class="row g-5  text-lg-start">
-                    <!-- Image Section -->
-                    <div class="col-12 col-lg-5 order-lg-1">
-                        <div class="h-100">
-                            <img style="object-fit: cover;" src="{{ package.image.url }}" class="img-fluid rounded shadow-lg" alt="{{ package.name }}">
+<!-- ========================================
+     PACKAGE DETAIL SECTION
+========================================= -->
+<div class="container-fluid package-detail-section py-5">
+
+    <div class="container py-5">
+
+        <div class="row g-5 package-detail-row">
+
+
+            <!-- ========================================
+                 LEFT SIDE - STICKY IMAGE / CAROUSEL
+            ========================================= -->
+            <div class="col-12 col-lg-5 package-left-column">
+
+                <div class="package-sticky-wrapper">
+
+                    {% if package.images.all %}
+
+                    <div
+                        id="packageImageCarousel"
+                        class="carousel slide package-carousel shadow-lg"
+                        data-bs-ride="carousel"
+                    >
+
+                        <div class="carousel-inner">
+
+                            {% for img in package.images.all %}
+
+                            <div
+                                class="carousel-item {% if forloop.first %}active{% endif %}"
+                            >
+
+                                <img
+                                    src="{{ img.image.url }}"
+                                    class="d-block w-100"
+                                    alt="{{ package.name }}"
+                                >
+
+                            </div>
+
+                            {% endfor %}
+
                         </div>
+
+
+
+                        <!-- ========================================
+                             CAROUSEL CONTROLS
+                        ========================================= -->
+                        {% if package.images.count > 1 %}
+
+                        <button
+                            class="carousel-control-prev"
+                            type="button"
+                            data-bs-target="#packageImageCarousel"
+                            data-bs-slide="prev"
+                        >
+
+                            <span
+                                class="carousel-control-prev-icon"
+                                aria-hidden="true"
+                            ></span>
+
+                            <span class="visually-hidden">
+                                Previous
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            class="carousel-control-next"
+                            type="button"
+                            data-bs-target="#packageImageCarousel"
+                            data-bs-slide="next"
+                        >
+
+                            <span
+                                class="carousel-control-next-icon"
+                                aria-hidden="true"
+                            ></span>
+
+                            <span class="visually-hidden">
+                                Next
+                            </span>
+
+                        </button>
+
+                        {% endif %}
+
                     </div>
-                    
-                    <!-- Description Section -->
-                    <div class="col-12 col-lg-6 order-lg-2">
-                        <h1 class="mb-4">{{ package.name }}</h1>
-                        <p class="mb-4">{{ package.description|safe }}</p>
-                        <a class="btn  rounded-pill py-3 px-5" style="background:linear-gradient(100deg, #1B4332, #2D6A4F, #1B4332); border-color: black; color: #fff;" href="https://wa.me/919446766322">Enquire Now</a>
-                    </div>
+
+                    {% endif %}
+
                 </div>
+
             </div>
+
+
+
+            <!-- ========================================
+                 RIGHT SIDE - PACKAGE DESCRIPTION
+            ========================================= -->
+            <div class="col-12 col-lg-7 package-right-column">
+
+                <div class="package-description-wrapper">
+
+
+                    <!-- Package title -->
+                    <h1 class="package-detail-title mb-4">
+                        {{ package.name }}
+                    </h1>
+
+
+
+                    <!-- ========================================
+                         CKEDITOR DESCRIPTION
+                         
+                         IMPORTANT:
+                         Images remain exactly where they were
+                         inserted inside CKEditor.
+                    ========================================= -->
+                    <div class="package-description-content">
+
+                        {{ package.description|safe }}
+
+                    </div>
+
+
+
+                    <!-- ========================================
+                         ENQUIRE BUTTON
+                    ========================================= -->
+                    <div class="mt-4">
+
+                        <a
+                            href="https://wa.me/919446766322"
+                            class="btn package-enquire-btn rounded-pill py-3 px-5"
+                        >
+                            Enquire Now
+                        </a>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
         </div>
-        
-        
-        
-       
-        
+
+    </div>
+
+</div>
+
+
+{% endwith %}
+
 {% endblock %}

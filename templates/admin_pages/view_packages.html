@@ -34,13 +34,25 @@
                         </td>
                         
                         
-                          <td style="width: 150px;">
+                          {% comment %} <td style="width: 150px;">
                               {% if package.image %}
                               <img src="{{ package.image.url }}" alt="Blog Image" style="width: 80px; height: 80px;">
                               {% else %}
                               <p>No image available</p>
                               {% endif %}
-                          </td>
+                          </td> {% endcomment %}
+
+
+                          <td style="width: 150px;">
+    {% with package.images.first as img %}
+        {% if img %}
+        <img src="{{ img.image.url }}" alt="Package Image" style="width: 80px; height: 80px;">
+        {% else %}
+        <p>No image available</p>
+        {% endif %}
+    {% endwith %}
+</td>
+
                           <td style="width: 150px;">{{ package.created_date|date:"Y-m-d" }}</td>
                             
                             <td style="width: 150px;">{{ package.category.name}}</td>
