@@ -76,13 +76,23 @@ WSGI_APPLICATION = 'athidhi_holidays.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+import dj_database_url
 
+DATABASES = {
+    'default': dj_database_url.parse(
+        'postgresql://kerala_user:npg_6YzHMB7qdajU@ep-round-grass-bi62elja-pooler.c-5.ap-southeast-1.aws.neon.tech/kerala_tours?sslmode=require',
+        conn_max_age=0,
+    )
+}
+DATABASES['default']['DISABLE_SERVER_SIDE_CURSORS'] = True
+DATABASES['default']['OPTIONS'] = {
+    'sslmode': 'require',
+    'keepalives': 1,
+    'keepalives_idle': 30,
+    'keepalives_interval': 10,
+    'keepalives_count': 5,
+}
+DATABASES['default']['DISABLE_SERVER_SIDE_CURSORS'] = True
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
@@ -136,7 +146,10 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR / "static")  # Ensure this points to your static folder
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STORAGES = {
+    'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
+    'staticfiles': {'BACKEND': 'whitenoise.storage.CompressedStaticFilesStorage'},
+}
 
 
 MEDIA_URL = '/media/'
